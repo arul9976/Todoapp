@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/arul.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <title>Login page</title>
+</head>
+
+<body>
+    <section class="side">
+        <img src="/img.svg" alt="">
+    </section>
+
+    <section class="main">
+        <div class="login">
+            <p class="line1">Welcome Again</p>
+            <div class="seperate"></div>
+            <p class="welcome">Please, provide login credential to proceed and have access to all our services</p>
+
+            <form action="/app/Login/submit-form" method="post" class="form-login" id="FormDataLogin">
+                <div class="form-control">
+                    <input type="email" class="User" name="Email" placeholder="Username" required="">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="form-control">
+                    <input type="password" id="Password" name="Password" placeholder="Password" required="">
+                    <i class="fas fa-lock"></i>
+                </div>
+
+                <button class="submit" value="login">Login</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        const formData = document.querySelector('.form-login')
+        const formUser = document.querySelector('.form-control > .User')
+        const formPass = document.getElementById('Password')
+
+        console.log(formData);
+        // formData.addEventListener('submit', (e) => {
+        //     e.preventDefault()
+        //     let Username = formUser.value
+        //     let Password = formPass.value
+
+        //     const Formobject = [{
+        //         Username: Username,
+        //         Password: Password
+        //     }]
+        //     console.log(Username,Password);
+        //     fetch('http://localhost:8000/app/submit-form/', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+
+        //         body: JSON.stringify({ Formobject }),
+        //     })
+                // .then(response => response.json())
+                // .then(data => {
+                //     console.log('sucessfull', data)
+                // })
+                // .catch(err => {
+                //     console.log('failed', err);
+                // })
+
+        // });
+    </script>
+</body>
+
+</html>

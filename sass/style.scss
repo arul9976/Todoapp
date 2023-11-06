@@ -1,0 +1,704 @@
+* {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+}
+
+//Css
+$LoginWidth: 20rem;
+$width: 40rem;
+$height: 35rem;
+$h1-primary: rgb(8, 136, 176);
+$h1-secontary: rgb(25, 212, 172);
+$bg-color : #fff;
+$border-radius: 1em;
+$hoverList: rgb(103, 201, 231);
+$a-bg: #fff;
+$transition: 250ms ease-in-out;
+$inner-padding: .5em;
+$animation: 1000;
+$animation-duration: 1000;
+$h1-secontary-op: rgb(8, 136, 176, 0.7);
+$shadow-color: rgba(0, 0, 0, 0.25);
+
+
+
+//end
+body {
+    --animation-duration: 500;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
+    background-image: url(../abstract.jpg);
+    background-size: cover;
+    background-position: center;
+    scroll-behavior: smooth;
+    transition: .50s;
+
+    h1,
+    b,
+    p {
+        font-family: 'Ubuntu', sans-serif;
+    }
+
+
+
+    main {
+        backdrop-filter: blur(30px);
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        width: calc($width + 25em);
+        gap: 1rem;
+        overflow: hidden;
+        border-radius: $border-radius;
+        padding: 0.7em;
+
+        .Login {
+            display: grid;
+            background: rgba(233, 223, 223, 0.4);
+            height: $height;
+            width: $LoginWidth;
+            position: relative;
+            grid-template-rows: 10rem;
+
+            .LoginLink {
+                a {
+                    i {
+                        display: none;
+                    }
+
+                }
+            }
+
+            .UserLogin {
+                display: grid;
+                grid-template-columns: 1fr;
+                place-content: center;
+
+                .User {
+                    display: grid;
+                    align-items: center;
+                    justify-content: center;
+                    grid-template-rows: 1fr 2rem;
+
+                    a {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        svg {
+                            color: rgb(182, 188, 192);
+                        }
+                    }
+                }
+
+                a {
+                    display: grid;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+
+            .navBar {
+                display: grid;
+                grid-template-rows: repeat(2, 1fr);
+
+                .navlist {
+                    display: flex;
+                    flex-direction: column-reverse;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0.5rem .3em;
+                    // grid-template-rows: repeat(2, 1fr);
+
+                    li {
+                        height: 3rem;
+                        width: 100%;
+                        list-style: none;
+                        margin: 0.5rem .3em;
+                        padding: $inner-padding;
+                        border-radius: $border-radius;
+
+                        a {
+                            display: grid;
+                            grid-template-columns: 1rem 1fr;
+                            gap: 1.2rem;
+                            place-content: center;
+                            text-decoration: none;
+                            background: linear-gradient(to left, #e2099a, #df4609);
+                            background-clip: text;
+                            color: transparent;
+                            font-size: 1.3em;
+                            font-weight: 700;
+
+                            b {
+                                font-size: 1rem;
+                                display: flex;
+                                align-items: center;
+                                justify-content: start;
+                            }
+                        }
+                    }
+
+                    li:hover {
+                        background: linear-gradient(to right, $h1-primary, $h1-secontary);
+
+                        a {
+                            color: #fff;
+                        }
+                    }
+                }
+
+                .design_Bottom {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    align-items: center;
+                    justify-content: center;
+                    margin: .5em;
+                    border-radius: $border-radius;
+                    background: linear-gradient(to right, $h1-primary, $h1-secontary);
+
+                    b {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                        font-weight: 700;
+                        margin: .5rem;
+                    }
+
+                    a {
+                        width: 10rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        img {
+                            width: 8rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        .FormDatas {
+            display: grid;
+            grid-template-rows:
+                min-content 1fr min-content 5rem;
+
+            height: $height;
+            width: $width;
+            overflow: hidden;
+
+            box-shadow: 0.25rem, 0.25rem, 1rem 0 rgba(0, 0, 0, 0.4);
+
+            header {
+                background: rgba($bg-color, 0.4);
+                border-radius: 2rem;
+
+                b {
+                    font-weight: 300;
+                    font-size: 1.5em;
+
+                }
+            }
+
+            .list_header {
+                display: grid;
+                grid-template-columns: 1fr 3rem;
+                grid-template-rows: 1fr;
+                gap: 0.5rem;
+                padding: 0.5em 1rem;
+                // padding-bottom: 0;
+
+
+            }
+
+            .list-items {
+                // background-color: $bg-color;
+                border-bottom-left-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+                overflow-y: auto;
+
+                ul {
+                    list-style: none;
+                    display: grid;
+                    grid-auto-flow: row;
+                    grid-template-columns: 1fr 1fr;
+                    grid-template-rows: auto 1fr 1fr;
+                    grid-auto-rows: min-content;
+
+                    padding: 1rem;
+
+                    .col_1,
+                    .col_2 {
+                        margin: 0.5rem 0;
+                    }
+
+                    .list-item {
+                        background: #fff;
+                        height: min-content;
+                        border-radius: calc(1.4 * $border-radius);
+                        padding: 1rem;
+                        margin: .3em;
+                        padding-right: 1em;
+                        overflow: hidden;
+                    }
+
+                    b {
+                        padding-right: 1em;
+                        font-family: 'Ubuntu', sans-serif;
+                    }
+
+                    li {
+                        position: relative;
+
+                        display: grid;
+                        grid-template-rows: 1fr;
+                        grid-template-columns: 1.5em 1fr;
+                        gap: 1rem;
+                        // cursor: pointer;
+                        // margin: 0.4rem !important;
+                        padding: 0.5rem;
+                        border-radius: $border-radius;
+                        // margin: .3em;
+                        overflow: hidden;
+
+                        .list-item__checkmark {
+                            place-self: center;
+                            display: grid;
+                            place-content: center;
+                            width: .85em;
+                            border: 1px solid $h1-primary;
+                            height: .85em;
+
+                        }
+
+                        .list-item__title span {
+                            font-size: 1.2em;
+                            // font-weight: 700;
+                            font-family: 'Ubuntu', sans-serif;
+                        }
+
+                        h5 {
+                            display: flex;
+                            align-items: center;
+
+                        }
+
+                        .menu_wrapper {
+                            position: absolute;
+                            right: 0;
+                            left: 0;
+                            top: 0.4em;
+                            bottom: 0;
+
+                            display: grid;
+                            grid-auto-flow: column;
+                            grid-auto-columns: 1rem;
+                            justify-content: end;
+                            align-items: center;
+                            padding-right: 1em;
+
+
+                        }
+
+                        .menu_wrapper .menu_base {
+                            $padding_base: 1em;
+                            position: absolute;
+                            right: 0;
+                            left: 0;
+                            top: 0;
+                            bottom: 0;
+
+                            display: grid;
+                            grid-auto-flow: column;
+                            grid-auto-columns: 1rem;
+                            justify-content: end;
+                            align-items: center;
+                            gap: 1rem;
+
+                            padding-right: $padding_base;
+                            clip-path: circle(0 at calc(100% - $padding_base - (0.5 * $padding_base)) 50%);
+                            transition: clip-path 750ms cubic-bezier(0.66, 0.03, 0, 1.015);
+                        }
+
+                        .menu_wrapper .menu_base::after {
+                            content: "";
+                            position: absolute;
+                            right: calc(-1 * 20rem / 2);
+                            top: calc(-1 * 20rem / 2 + 1.5em);
+                            width: 20rem * 1.2;
+                            height: 20rem;
+                            border-radius: 90%;
+                            background: $h1-secontary;
+                            box-shadow: -4px 0px 8px 0px $shadow-color;
+                            z-index: -1;
+                        }
+
+                        .menu_wrapper .menu_base.open {
+                            clip-path: circle(100% at 50% 50%);
+                        }
+
+                        .menu_wrapper .menu_base a {
+                            color: white;
+                        }
+
+                        .list-item__checkmark path {
+                            stroke: $bg-color;
+                            stroke-dasharray: 20;
+                            stroke-dashoffset: 20;
+
+                            transition: stroke-dashoffset 250ms ease-in-out;
+
+                            i {
+                                place-self: center;
+                                display: grid;
+                                place-content: center;
+                                border: 1px solid $h1-primary;
+                                width: .95em;
+                                height: .95em;
+                                border-radius: 2px;
+                                color: $h1-secontary;
+                            }
+
+                        }
+
+                        a {
+                            font-size: 1em;
+                            display: grid;
+                            place-content: center;
+
+                            i {
+                                color: $h1-primary;
+                            }
+                        }
+
+                        a:hover {
+                            transform: scale(1.2);
+                            transition: .40s ease-in-out;
+                        }
+                    }
+
+                    .list-item.checked li .list-item__checkmark {
+                        background-color: $h1-primary;
+                    }
+
+                    .list-item.checked li .list-item__checkmark path {
+                        stroke-dashoffset: 0;
+                    }
+
+                    .list-item.appear {
+                        animation: appear calc($animation * 1ms) ease-in-out;
+                    }
+
+                    @keyframes appear {
+                        0% {
+                            clip-path: circle(0 at 0% 50%);
+                            background: $h1-secontary;
+                        }
+
+                        50% {
+                            clip-path: circle(100% at 50% 50%);
+                        }
+
+                        100% {
+                            background: transparent;
+                        }
+                    }
+                }
+
+            }
+
+            .addPanel {
+                display: grid;
+                place-content: start stretch;
+                padding: 1rem;
+
+                height: 0;
+                overflow: hidden;
+                padding: 0 1rem;
+                transition: padding-top $transition,
+                    height $transition;
+
+                .addVenel {
+                    display: grid;
+                    grid-template-columns: 1fr 2rem;
+                    grid-template-rows: 2rem;
+
+                    padding: 0.5rem;
+                    border: 1px solid $h1-primary;
+                    border-radius: 1.5rem;
+                    background: $bg-color;
+
+
+                    button,
+                    input {
+                        border: 0;
+                        border-radius: 1rem;
+                    }
+
+                    .add-todo-btn {
+                        position: relative;
+                        background: linear-gradient(90deg,
+                                $h1-secontary,
+                                $h1-primary );
+                        color: $bg-color;
+                        clip-path: circle(calc(50% + 0.25em) at 50% 50%);
+                    }
+
+                    .add-todo-btn:hover {
+                        transform: scale(0.8);
+                    }
+
+                    .add-todo-btn::before {
+                        content: "";
+                        position: absolute;
+
+                        left: 50%;
+                        right: 50%;
+                        top: 50%;
+                        bottom: 50%;
+
+                        border-radius: 50%;
+
+                        opacity: 0;
+                        background: $h1-primary;
+
+                        transition:
+                            left $transition,
+                            right $transition,
+                            top $transition,
+                            bottom $transition,
+                            opacity $transition;
+                    }
+
+                    .add-todo-btn:hover::before {
+                        opacity: .2;
+                        left: calc(-1 * var($inner-padding));
+                        right: calc(-1 * var($inner-padding));
+                        top: calc(-1 * var($inner-padding));
+                        bottom: calc(-1 * var($inner-padding));
+                    }
+
+                    .add-todo-btn:active::before {
+                        opacity: 0.4s;
+                        left: 25%;
+                        right: 25%;
+                        top: 25%;
+                        bottom: 25%;
+                    }
+
+                    @keyframes appear {
+                        0% {
+                            clip-path: circle(0 at 0% 50%);
+                            background: $h1-secontary;
+                        }
+
+                        50% {
+                            clip-path: circle(100% at 50% 50%);
+                        }
+
+                        100% {
+                            background: transparent;
+                        }
+                    }
+
+
+                    @keyframes fly-out-in {
+                        0% {
+                            transform: translate(0%, 0%);
+                        }
+
+                        49% {
+                            transform: translate(175%, -175%);
+                        }
+
+                        50% {
+                            transform: translate(-175%, -175%);
+                        }
+
+                        51% {
+                            transform: translate(-175%, 175%);
+                        }
+
+                        100% {
+                            transform: translate(0%, 0%);
+                        }
+                    }
+
+                    .add-todo-btn.sending svg {
+                        animation: fly-out-in calc($animation * 1ms) ease-in-out;
+
+                    }
+                }
+
+                .addVenel_text {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-template-rows: 2rem;
+                    height: 5rem;
+                    padding: 0.5rem;
+                    border: 1px solid $h1-primary;
+                    border-radius: 1.5rem;
+                    background: $bg-color;
+                    overflow: hidden;
+
+                    textarea {
+                        outline: none;
+                        border: none;
+                        overflow: hidden;
+                        height: 60px;
+                    }
+                }
+            }
+
+            .addPanel.open {
+                height: 10rem;
+                padding-top: 1.5em;
+                gap: 0.4em;
+            }
+
+            nav {
+                display: grid;
+                align-items: center;
+                background: transparent;
+                border-radius: calc($border-radius + 1rem);
+                margin-top: 1rem;
+                margin-bottom: 0.5rem;
+                background: linear-gradient(90deg, $h1-primary, $h1-secontary);
+                opacity: 0.8;
+
+                .icons {
+                    display: flex;
+                    flex-direction: row-reverse;
+                    justify-content: space-between;
+                    padding: 0 1rem;
+
+                    a {
+                        color: $a-bg;
+                        place-content: center;
+                        font-size: 2.5em;
+                        display: grid;
+                    }
+
+                    .add-button {
+                        transition: transform $transition;
+                    }
+
+                    .add-button.open {
+                        transform: rotate(135deg);
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    @media (max-width:1050px) {
+        $width: 45rem;
+
+        main {
+            width: $width;
+
+            .Login {
+                width: calc($width - 30rem);
+
+                .navBar {
+                    b {
+                        font-size: 0.7em;
+                    }
+
+                    .design_Bottom {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            }
+
+            span {
+                font-size: 1em;
+            }
+
+            b {
+                font-size: 0.9em;
+            }
+
+            .FormDatas {
+                width: calc($width - 20rem);
+
+                .list-items {
+                    ul {
+                        // background: red;
+                        grid-template-columns: 1fr;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    @media (max-width:720px) {
+        $width: 100%;
+
+        main {
+            width: $width;
+            grid-template-columns: 1fr;
+
+            .FormDatas {
+                width: 100%;
+            }
+
+            .Login {
+                display: flex;
+                width: 100%;
+                height: 5rem;
+
+                .UserLogin {
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-between;
+                }
+
+                .LoginLink {
+                    display: flex;
+
+                    a {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0.5em 1em;
+
+                        i {
+                            font-size: 3em;
+                        }
+                    }
+                }
+
+                .navBar {
+                    overflow: hidden;
+                    transition: .50s;
+
+                    .navlist {
+                        position: absolute;
+                        top: 5rem;
+                        right: -100rem;
+                        transition: .50s;
+                        background: blue;
+                        border-radius: 10px;
+                    }
+
+                    .navlist.open {
+                        right: 1rem;
+                    }
+
+                    .design_Bottom {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
