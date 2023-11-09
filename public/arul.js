@@ -19,7 +19,7 @@ formData.addEventListener('click', (e) => {
         Password: Password
     }
     console.log(Email, Password);
-    fetch(`http://localhost:8000/app/Login/`, {
+    fetch(`/app/Login/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
