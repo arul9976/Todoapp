@@ -1,55 +1,98 @@
 
+
 const itemTemplates = document.querySelector('#item-template')
 // const RemoveAll = document.querySelector('.removeAll')
 const Username = document.querySelector('.Login > .UserLogin > .User > .Username')
 const SignLogin = document.querySelector('.Login > .UserLogin > .LoginLink > .LoginSign')
+const mediaQuery950 = window.matchMedia("(max-width:950px)")
 
 const msg = document.querySelector('.list-items > ul')
-const col_1 = msg.querySelector('.col_1')
-const col_2 = msg.querySelector('.col_2')
+
 
 
 const savedItems = []
 let currentMenu = null;
+let username = ''
+const SignUpLoaded = () => {
+    try {
+        let data = JSON.parse(localStorage.getItem('Data'))
 
-
-const UserLoaded = (url) => {
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            console.log('datas', data);
-
-            data.forEach(uname => {
-                displayUser(uname)
-                console.log('data', uname)
-                const DataObject = [uname]
-                console.log('dataonject', DataObject)
-                localStorage.setItem('uname', JSON.stringify(uname))
-            })
-
-
+        console.log('work', data)
+        data.map(Item => {
+            msg.innerHTML = ""
+            displayUser(Item)
+            DefaultLoad(true, Item.Username)
         })
-        .catch(error => {
-            let name = localStorage.getItem('uname')
-            const data = JSON.parse(name)
-            displayUser(data)
-        });
+    }
+    catch {
+        console.log('next')
+    }
+
 
 }
-console.log('userLoad');
+const TimeFunc = (date) => {
+    let Hours = date.getHours()
+    let Minutes = date.getMinutes()
+    let month = date.getMonth()
+    let TodayDate = date.getDate()
+    let AmPm = Hours >= 12 ? 'Pm' : 'Am'
+    Hours = Hours % 12
+    Hours = Hours ? Hours : 12
+    const Add0 = (n) => {
+        n = n < 10 ? '0' + n : n
+        return n
+    }
+    Minutes = Add0(Minutes)
+    month = Add0(month)
+    TodayDate = Add0(TodayDate)
+    let monthWord = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    month = month < 10 ? '0' + month : month
+    let strTime = { date: TodayDate, month: monthWord[month], hours: Hours, minutes: Minutes, ampm: AmPm }
+    return strTime
+}
+
+
+const LoginLoaded = () => {
+    try {
+        let Data = [JSON.parse(localStorage.getItem('LoginData'))]
+
+        console.log('LoginData', Data)
+        msg.innerHTML = ""
+        Data.forEach(Item => {
+
+            displayUser(Item)
+            DefaultLoad(true, Item.Username)
+            localStorage.setItem('Data', JSON.stringify(Item))
+
+        })
+    }
+    catch {
+        console.log('nexting')
+        SignUpLoaded()
+    }
+
+
+}
+
 setTimeout(() => {
-    UserLoaded('http://localhost:8000/app/submit-form')
+
+    LoginLoaded()
+
 }, 500);
 
-const DefaultLoad = (ifData = false) => {
 
-    fetch('http://localhost:8000/app')
+
+const DefaultLoad = (ifData = false, username) => {
+
+    fetch(`/app/${username}/`, {
+        method: 'GET'
+    })
+
         .then(response => response.json())
         .then(data => {
 
             if (ifData) {
-                col_1.innerHTML = ""
-                col_2.innerHTML = ""
+
                 data.map(Item => {
                     displayItem(Item, true)
                 })
@@ -59,7 +102,8 @@ const DefaultLoad = (ifData = false) => {
         .catch(error => console.error('Error fetching data: ', error));
 }
 setTimeout(() => {
-    DefaultLoad(ifData = true, Load = true)
+    // console.log('name',username)
+    // DefaultLoad(ifData = true, username)
 
 }, 501);
 
@@ -67,12 +111,13 @@ setTimeout(() => {
 const displayUser = (name) => {
     Username.textContent = ""
     Username.textContent = name.Username
-    console.log(name);
+
     SignLogin.textContent = 'Log Out'
 
     SignLogin.addEventListener('click', () => {
         Username.textContent = 'Username'
-        localStorage.removeItem('uname')
+        localStorage.removeItem('Data')
+        localStorage.removeItem('LoginData')
     })
 }
 
@@ -99,8 +144,9 @@ const displayItem = (ItemsOnList, appear = false) => {
     const DeleteEl = itemNode.querySelector('.menu_wrapper > .menu_base > .DeleteBar')
     const MenuBtn = itemNode.querySelector('.menu_wrapper > .menuBar')
     const MenuBase = itemNode.querySelector('.menu_wrapper > .menu_base')
+    const date = itemNode.querySelector('#time')
 
-
+    date.textContent = `${ItemsOnList.TimeDate.date} ${ItemsOnList.TimeDate.month} ${ItemsOnList.TimeDate.hours}:${ItemsOnList.TimeDate.minutes} ${ItemsOnList.TimeDate.ampm}`
     MenuBtn.addEventListener('click', (e) => {
         e.stopPropagation();
 
@@ -140,18 +186,16 @@ const displayItem = (ItemsOnList, appear = false) => {
             itemNode.classList.remove('checked')
         }
     })
-    let NumData = savedItems.indexOf(ItemsOnList)
 
-    if (NumData % 2 == 0) {
-        col_1.prepend(itemNode)
-    }
-    else {
-        col_2.prepend(itemNode)
-    }
-    // msg.prepend(itemNode)
+
+
     if (appear) {
         itemNode.classList.add('appear')
     }
+
+
+    msg.prepend(itemNode)
+
     // RemoveAll.addEventListener('click', () => {
     //     const checked = msg.querySelectorAll('.list-item.checked')
     //     checked.forEach(DataChecked => {
@@ -168,18 +212,22 @@ const displayItem = (ItemsOnList, appear = false) => {
             console.dir(itemNode)
         }
         const __id = ItemsOnList._id
-        deleteTask(__id)
+
+        const uname = Username.textContent
+
+        deleteTask(uname, __id)
         const duration = getAnimation(DeleteEl)
         setTimeout(() => {
             const index = savedItems.indexOf(ItemsOnList)
 
             savedItems.splice(index, 1);
-            if (NumData % 2 == 0) {
-                col_1.removeChild(itemNode)
-            }
-            else {
-                col_2.removeChild(itemNode)
-            }
+            // if (NumData % 2 == 0) {
+            //     col_1.removeChild(itemNode)
+            // }
+            // else {
+            //     col_2.removeChild(itemNode)
+            // }
+            msg.removeChild(itemNode)
 
         }, duration);
     })
@@ -187,7 +235,7 @@ const displayItem = (ItemsOnList, appear = false) => {
 }
 const DataLoad = (data) => {
 
-    fetch('http://localhost:8000/app', {
+    fetch('/app', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -201,17 +249,17 @@ const DataLoad = (data) => {
             displayItem(responseData, true)
         })
         .catch(error => console.error('Error sending data:', error));
-    console.log('dataLoad')
+
 
 }
 //deleDtaonDataBase
-const deleteTask = async (taskId) => {
-    console.log('delete Loaded');
+const deleteTask = async (data, ID) => {
+    console.log('delete Loaded', data);
+    const uname = ID
+    const id = data
+    fetch(`/app/${id}:${uname}`, {
+        method: 'delete'
 
-    const id = taskId;
-
-    fetch(`http://localhost:8000/app/${id}`, {
-        method: "DELETE",
     })
         .then((response) => {
             if (response.ok) {
@@ -250,9 +298,11 @@ addTodobtn.addEventListener('click', () => {
 
         const data =
         {
+            username: Username.textContent,
             subject: subject,
             message: message,
-            checked: false
+            checked: false,
+            TimeDate: TimeFunc(new Date)
         }
 
         DataLoad([data])
@@ -262,12 +312,12 @@ addTodobtn.addEventListener('click', () => {
     }
 })
 
-const addButton = document.querySelector('nav > .icons > .add-button');
+const addButton = document.querySelector('.icons > .add-button');
 const addPanel = document.querySelector('.addPanel');
-const refresh = document.querySelector('.icons > .refresh');
+const refresh = document.querySelector('.FormDatas > .list_header > .refresh');
 
 refresh.addEventListener('click', () => {
-    DefaultLoad(ifData = true)
+    LoginLoaded()
     console.log('run')
 })
 addButton.addEventListener('click', () => {
@@ -279,13 +329,20 @@ addButton.addEventListener('click', () => {
 
 const LoginLink = document.querySelector('.Login > .UserLogin > .LoginLink > .navLink')
 const OpenNav = document.querySelector('.Login > .navBar > .navlist')
-
+const overlay = document.querySelector('.overlay')
 
 LoginLink.addEventListener('click', () => {
     OpenNav.classList.toggle('open')
+
+    if (OpenNav.className == 'navlist open') {
+        console.log('data')
+        overlay.style.display = 'block'
+        navbar.style.transform = 'translateX(0)';
+    }
+    else {
+        overlay.style.display = 'none'
+        navbar.style.transform = 'translateX(-100)';
+    }
+
 })
-console.log(LoginLink);
-console.log(OpenNav);
-// setInterval(() => {
-//     DefaultLoad(true)
-// }, 30000);
+

@@ -21,55 +21,30 @@
             <div class="seperate"></div>
             <p class="welcome">Please, provide login credential to proceed and have access to all our services</p>
 
-            <form action="/app/Login/submit-form" method="post" class="form-login" id="FormDataLogin">
+            <form class="form-login" id="FormDataLogin">
                 <div class="form-control">
                     <input type="email" class="User" name="Email" placeholder="Username" required="">
                     <i class="fas fa-user"></i>
+
                 </div>
+                <div class="msgLogin"></div>
                 <div class="form-control">
                     <input type="password" id="Password" name="Password" placeholder="Password" required="">
                     <i class="fas fa-lock"></i>
                 </div>
 
                 <button class="submit" value="login">Login</button>
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <a href="/SignUp">Create New Account</a>
+                </div>
+
             </form>
+
         </div>
     </section>
 
-    <script>
-        const formData = document.querySelector('.form-login')
-        const formUser = document.querySelector('.form-control > .User')
-        const formPass = document.getElementById('Password')
-
-        console.log(formData);
-        // formData.addEventListener('submit', (e) => {
-        //     e.preventDefault()
-        //     let Username = formUser.value
-        //     let Password = formPass.value
-
-        //     const Formobject = [{
-        //         Username: Username,
-        //         Password: Password
-        //     }]
-        //     console.log(Username,Password);
-        //     fetch('http://localhost:8000/app/submit-form/', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-
-        //         body: JSON.stringify({ Formobject }),
-        //     })
-                // .then(response => response.json())
-                // .then(data => {
-                //     console.log('sucessfull', data)
-                // })
-                // .catch(err => {
-                //     console.log('failed', err);
-                // })
-
-        // });
-    </script>
+    <script src="/arul.js"> </script>
+    
 </body>
 
 </html>

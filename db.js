@@ -2,38 +2,53 @@ const express = require('express');
 const app = express()
 const path = require('path')
 const bcrypt = require('bcrypt')
-const port = 8000;
+const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { ObjectId } = require('mongodb');
+const connectDb = require('./connectDB');
 const router = express.Router()
 // app.use(CORS)
 
+const dotenv = require('dotenv')
+dotenv.config()
+
+connectDb()
 
 
 // Connection URI
 // const uri = 'mongodb+srv://admin04:arul9976@cluster0.fzkpyji.mongodb.net/?retryWrites=true&w=majority';
 // const uri = 'mongodb://localhost:27017/';
 // Connect to the MongoDB server
-// mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-mongoose.connect("mongodb://127.0.0.1:27017/users")
-    .then(() => {
-        console.log('Connected to the database!');
 
-    })
-    .catch((error) => {
-        console.error('Error connecting to the database:', error);
-    });
+
+
+// mongoose.connect("mongodb://127.0.0.1:27017/users")
+//     .then(() => {
+//         console.log('Connected to the database!');
+
+//     })
+//     .catch((error) => {
+//         console.error('Error connecting to the database:', error);
+//     });
 
 
 const userSchema = new mongoose.Schema({
+    username: String,
     subject: String,
     message: String,
-    checked: Boolean
+    checked: Boolean,
+    TimeDate: {
+        date: String,
+        month: String,
+        hours: String,
+        minutes: String,
+        ampm: String,
+    }
 });
 
-const User = mongoose.model('User', userSchema);
+
 
 
 
@@ -48,6 +63,7 @@ app.use(cors(corsOptions))
 app.use(express.static("public"))
 app.set('view engine', 'ejs');
 // app.set('view engine', 'jade');
+app.use(connectDb)
 
 app.get('/Login', (req, res) => {
     res.render("login")
@@ -55,21 +71,111 @@ app.get('/Login', (req, res) => {
 app.get('/SignUp', (req, res) => {
     res.render("signUp")
 })
+app.get('/Dashboard', (req, res) => {
+    res.render("Dashboard")
+})
 
-app.post('/app', async (req, res) => {
+const Login = require('./src/db_Login');
+
+
+
+
+app.post('/app/SignUp/', async (req, res) => {
+    try {
+        const data = {
+            Username: req.body.Formobject.Username,
+            Email: req.body.Formobject.Email,
+            Password: req.body.Formobject.Password,
+        }
+
+        const saltRounds = 10;
+        const hashpass = await bcrypt.hash(data.Password, saltRounds)
+        data.Password = hashpass
+        console.log(data)
+        const userdata = await Login.insertMany(data)
+
+        console.log('jijij', userdata);
+        return res.json(userdata)
+
+
+    }
+
+    catch (error) {
+        console.log('Error processing data:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+
+})
+
+app.post('/app/Login/', async (req, res) => {
+    const DataEL = await req.body
+
+
+    const Data = await Login.find({ Email: DataEL.Formobject.Email }).lean()
+    console.log('hi', Data)
+    try {
+        if (Data.length !== 0) {
+            console.log('password', req.body.Formobject.Password)
+            const pass = Data[0].Password
+            console.log('email', pass)
+            if (await bcrypt.compare(req.body.Formobject.Password, pass)) {
+                console.log('pass')
+                res.json(Data)
+            }
+            else {
+                res.json({ error: 'Un/Ps wrong' })
+            }
+
+        }
+        else {
+            res.json({ error: 'User not exists' })
+        }
+
+        // res.json(Data)
+    }
+
+    catch (error) {
+        console.log('Error processing data:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+
+})
+
+const GetUser = (DataEL) => {
+    app.get('/app/Dashboard/Login/', async (request, response) => {
+        const Data = await Login.findOne({ Email: DataEL })
+
+        console.log('datassss', Data);
+        response.json([Data])
+
+    })
+}
+const DataPost = (username) => {
+
+    const User = mongoose.model(username, userSchema);
+    return User
+}
+app.post('/app/', async (req, res) => {
+
     try {
         const ReceivedData = await req.body.data;
         console.log('Received data from the frontend:', ReceivedData);
         try {
             ReceivedData.forEach(Data => {
+                console.log('jjh', Data)
+                let User = DataPost(Data.username)
                 const newData = new User(Data)
-
+                console.log('frfd', newData)
                 newData.save()
                     .then(() => {
                         console.log('data saved');
                     }).catch(() => {
                         console.log('data saved failed');
                     })
+                // const data = User.find({ subject: Data.subject })
+                res.json(newData);
             })
 
         }
@@ -86,13 +192,13 @@ app.post('/app', async (req, res) => {
 
 
 })
-
-
-
-app.delete('/app/:id', async (req, res) => {
-    const id = new ObjectId(req.params);
-
-    if (mongoose.Types.ObjectId.isValid(id)) {
+app.delete('/app/:id/', async (req, res) => {
+    const data = req.params;
+    const dataSplit = data.id.split(':')
+    const uname = dataSplit[0]
+    const id = new ObjectId(dataSplit[1])
+    const User = DataPost(uname)
+    if (data) {
         try {
             const deletedItem = await User.findByIdAndDelete(id)
             if (deletedItem) {
@@ -110,9 +216,15 @@ app.delete('/app/:id', async (req, res) => {
 
 });
 
-app.get('/app', async (req, res) => {
+
+
+app.get('/app/:username/', async (req, res) => {
+    const data = req.params;
+    console.log('name', data)
+    const User = DataPost(data.username)
     try {
-        const items = await User.find();
+        const items = await User.find({ username: data.username });
+        console.log('Items', items);
         res.json(items);
     } catch (err) {
         console.error('Error retrieving data: ', err);
@@ -120,67 +232,13 @@ app.get('/app', async (req, res) => {
     }
 });
 
-const Login = require('./src/db_Login');
 
 
-app.post('/app/Login/submit-form', async (req, res) => {
-    try {
-        const LoginDataEl = await Login.findOne({ Email: req.body.Email })
-        console.log('Received', req.body.Email)
 
-        if (LoginDataEl) {
-            app.get('/app/submit-form', async (request, response) => {
-                const Items = await Login.find({ Email: req.body.Email })
-                response.json(Items)
-            })
-            res.redirect('http://127.0.0.1:5500/Web_Projects/Todo/backend/')
-        }
-        else {
-            res.send('User not exists')
-            console.log('ella')
-        }
-    }
+const PORT = process.env.PORT || 8000
 
-    catch (error) {
-        console.log('Error processing data:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-
-
-})
-
-app.post('/app/SignUp/submit-form', async (req, res) => {
-    try {
-        const data = {
-            Username: req.body.Username,
-            Email: req.body.Email,
-            Password: req.body.Password,
-        }
-
-        
-        const saltRounds = 10;
-        const hashpass = await bcrypt.hash(data.Password, saltRounds)
-        data.Password = hashpass
-
-        const userdata = await Login.insertMany(data)
-
-        app.get('/app/submit-form', async (request, response) => {
-            const Items = await Login.find({ Username: req.body.Username })
-            response.json(Items)
-        })
-        return res.redirect('http://127.0.0.1:5500/Web_Projects/Todo/backend/')
-    }
-
-    catch (error) {
-        console.log('Error processing data:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-
-
-})
-
-app.listen(port, () => {
-    console.log(`server connected ${port}`);
+app.listen(PORT, () => {
+    console.log(`server connected ${PORT}`);
 })
 
 
