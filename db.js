@@ -7,22 +7,27 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { ObjectId } = require('mongodb');
-const connectDb = require('./connectDB');
+// const connectDb = require('./connectDB');
 const router = express.Router()
 // app.use(CORS)
 
 const dotenv = require('dotenv')
 dotenv.config()
 
-connectDb()
+// connectDb()
+console.log('url', process.env.MONGODB_URI)
 
-
+const mongoURI = process.env.MONGODB_URI
+console.log('url', mongoURI)
 // Connection URI
 // const uri = 'mongodb+srv://admin04:arul9976@cluster0.fzkpyji.mongodb.net/?retryWrites=true&w=majority';
 // const uri = 'mongodb://localhost:27017/';
 // Connect to the MongoDB server
 
-
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 // mongoose.connect("mongodb://127.0.0.1:27017/users")
 //     .then(() => {
@@ -57,13 +62,14 @@ const corsOptions = {
     credentials: true,
     optionSuccessStatus: 200,
 }
+app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions))
 app.use(express.static("public"))
 app.set('view engine', 'ejs');
 // app.set('view engine', 'jade');
-app.use(connectDb)
+// app.use(connectDb)
 
 app.get('/Login', (req, res) => {
     res.render("login")
@@ -240,5 +246,9 @@ const PORT = process.env.PORT || 8000
 app.listen(PORT, () => {
     console.log(`server connected ${PORT}`);
 })
+
+// app.listen(8000, () => {
+//     console.log(`server connected ${8000}`);
+// })
 
 
