@@ -4,7 +4,7 @@
   "description": "",
   "main": "db.js",
   "scripts": {
-    "start": "nodemon db.js",
+    "start": "node db.js db.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
