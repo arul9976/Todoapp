@@ -317,6 +317,13 @@ const addPanel = document.querySelector('.addPanel');
 const refresh = document.querySelector('.FormDatas > .list_header > .refresh');
 
 refresh.addEventListener('click', () => {
+    refresh.style.rotate += '360deg'
+    refresh.style.transition = '0.50s'
+    setTimeout(() => {
+        refresh.style = null
+        
+    }, 500);
+
     LoginLoaded()
     console.log('run')
 })
@@ -346,3 +353,12 @@ LoginLink.addEventListener('click', () => {
 
 })
 
+
+const preloader = document.getElementById('preloader')
+
+console.log(preloader)
+
+
+window.addEventListener('load', () => {
+    preloader.style.display = 'none'
+})
