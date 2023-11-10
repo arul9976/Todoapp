@@ -1,15 +1,16 @@
 const express = require('express');
 const app = express()
 const path = require('path')
+
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { ObjectId } = require('mongodb');
-// const connectDb = require('./connectDB');
+
 const router = express.Router()
-// app.use(CORS)
+
 
 const dotenv = require('dotenv')
 dotenv.config()
@@ -62,14 +63,16 @@ const corsOptions = {
     credentials: true,
     optionSuccessStatus: 200,
 }
+
+
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions))
 app.use(express.static("public"))
+
 app.set('view engine', 'ejs');
-// app.set('view engine', 'jade');
-// app.use(connectDb)
+
 
 app.get('/Login', (req, res) => {
     res.render("login")

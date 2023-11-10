@@ -321,7 +321,7 @@ refresh.addEventListener('click', () => {
     refresh.style.transition = '0.50s'
     setTimeout(() => {
         refresh.style = null
-        
+
     }, 500);
 
     LoginLoaded()
@@ -360,5 +360,8 @@ console.log(preloader)
 
 
 window.addEventListener('load', () => {
-    preloader.style.display = 'none'
+    setTimeout(() => {
+        preloader.style.display = 'none'
+    }, 2500);
+
 })

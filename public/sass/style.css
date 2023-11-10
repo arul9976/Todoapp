@@ -58,7 +58,7 @@ body #loader {
   margin: -75px 0 0 -75px;
   border-radius: 50%;
   border: 3px solid transparent;
-  border-top-color: #9370DB;
+  border-top-color: #ee2e0c;
   animation: spin 2s linear infinite;
 }
 body #loader:before {
@@ -70,7 +70,7 @@ body #loader:before {
   bottom: 5px;
   border-radius: 50%;
   border: 3px solid transparent;
-  border-top-color: #BA55D3;
+  border-top-color: #0dec05;
   animation: spin 3s linear infinite;
 }
 body #loader:after {
@@ -82,7 +82,7 @@ body #loader:after {
   bottom: 15px;
   border-radius: 50%;
   border: 3px solid transparent;
-  border-top-color: #FF00FF;
+  border-top-color: #0c73e7;
   animation: spin 1.5s linear infinite;
 }
 @keyframes spin {
