@@ -1,7 +1,7 @@
 on: push
 jobs:
   build-node:
-    run-on: ubundu-latest
+    runs-on: ubundu-latest
     container: node:16
     steps:
       - run: node --version
