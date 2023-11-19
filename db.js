@@ -90,16 +90,11 @@ const transporter = nodemailer.createTransport({
 
 });
 
-const mailOptions = {
-    from: 'hello@example.com',
-    to: 'arulkumar72004@gmail.com',
-    subject: 'Subject',
-    text: 'Email content'
-};
-const sendmail = () => {
+
+const sendmail = (mailOptions) => {
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log('hi', error);
+            console.log('hi err', error);
         } else {
             console.log('Email sent: ' + info.response);
             // do something useful
@@ -110,7 +105,18 @@ const sendmail = () => {
 
 app.post('/app/SignUp/', async (req, res) => {
     try {
-        sendmail()
+        try {
+            const mailOptions = {
+                from: 'hello@example.com',
+                to: 'arulkumar72004@gmail.com',
+                subject: 'Subject',
+                text: `checked the ${req.body.Formobject.Username}`
+            };
+            sendmail(mailOptions)
+        }
+        catch (err) {
+            console.log(err)
+        }
 
         const data = {
             Username: req.body.Formobject.Username,
@@ -124,7 +130,7 @@ app.post('/app/SignUp/', async (req, res) => {
         console.log(data)
         const userdata = await Login.insertMany(data)
 
-        console.log('jijij', userdata);
+        console.log('data', userdata);
         return res.json(userdata)
 
 
@@ -139,6 +145,7 @@ app.post('/app/SignUp/', async (req, res) => {
 })
 
 app.post('/app/Login/', async (req, res) => {
+
     const DataEL = await req.body
 
 
@@ -187,9 +194,34 @@ const DataPost = (username) => {
     const User = mongoose.model(username, userSchema);
     return User
 }
+
+app.post('/', (req, res) => {
+    try {
+        const mailOptions = {
+            from: 'hello@example.com',
+            to: 'arulkumar72004@gmail.com',
+            subject: 'Subject',
+            text: `succesfull logged`
+        };
+
+        sendmail(mailOptions)
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
 app.post('/app/', async (req, res) => {
 
     try {
+        const mailOptions = {
+            from: 'hello@example.com',
+            to: 'arulkumar72004@gmail.com',
+            subject: 'Subject',
+            text: `checked the /app/`
+        };
+
+        sendmail(mailOptions)
+
         const ReceivedData = await req.body.data;
         console.log('Received data from the frontend:', ReceivedData);
         try {
@@ -249,6 +281,8 @@ app.delete('/app/:id/', async (req, res) => {
 
 
 app.get('/app/:username/', async (req, res) => {
+    sendmail()
+
     const data = req.params;
     console.log('name', data)
     const User = DataPost(data.username)
