@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { ObjectId } = require('mongodb');
-
+const nodemailer = require('nodemailer')
 const router = express.Router()
 
 
@@ -29,15 +29,6 @@ mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
-
-// mongoose.connect("mongodb://127.0.0.1:27017/users")
-//     .then(() => {
-//         console.log('Connected to the database!');
-
-//     })
-//     .catch((error) => {
-//         console.error('Error connecting to the database:', error);
-//     });
 
 
 const userSchema = new mongoose.Schema({
@@ -88,7 +79,33 @@ app.get('/Dashboard', (req, res) => {
 
 const Login = require('./src/db_Login');
 
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    auth: {
+        user: 'arunmicheal8@gmail.com',
+        pass: 'muohnboaccbwfpoq',
+    }
 
+
+});
+
+const mailOptions = {
+    from: 'hello@example.com',
+    to: 'arulkumar72004@gmail.com',
+    subject: 'Subject',
+    text: 'Email content'
+};
+const sendmail = () => {
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('hi', error);
+        } else {
+            console.log('Email sent: ' + info.response);
+            // do something useful
+        }
+    });
+}
 
 
 app.post('/app/SignUp/', async (req, res) => {
@@ -116,6 +133,7 @@ app.post('/app/SignUp/', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 
+    sendmail()
 
 })
 
@@ -246,7 +264,7 @@ app.get('/app/:username/', async (req, res) => {
 
 
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 4000
 
 app.listen(PORT, () => {
     console.log(`server connected ${PORT}`);
