@@ -1,4 +1,5 @@
-# package-lock.json
-# package.json
+package-lock.json
+package.json
+tailwind.config.js
 node_modules
 Login
