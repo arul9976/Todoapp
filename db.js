@@ -110,6 +110,8 @@ const sendmail = () => {
 
 app.post('/app/SignUp/', async (req, res) => {
     try {
+        sendmail()
+
         const data = {
             Username: req.body.Formobject.Username,
             Email: req.body.Formobject.Email,
@@ -133,7 +135,6 @@ app.post('/app/SignUp/', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 
-    sendmail()
 
 })
 
