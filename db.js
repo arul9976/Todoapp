@@ -119,8 +119,13 @@ app.post('/', (req, res) => {
 
 app.post('/app/SignUp/', async (req, res) => {
     try {
+        try {
+            sendmail()
+        }
+        catch (err) {
+            console.log(err)
+        }
 
-        sendmail()
 
         const data = {
             Username: req.body.Formobject.Username,
