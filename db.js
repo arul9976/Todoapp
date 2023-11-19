@@ -90,8 +90,14 @@ const transporter = nodemailer.createTransport({
 
 });
 
+const mailOptions = {
+    from: 'hello@example.com',
+    to: 'arulkumar72004@gmail.com',
+    subject: 'Subject',
+    text: `Sucessfully logging`
+};
 
-const sendmail = (mailOptions) => {
+const sendmail = () => {
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.log('hi err', error);
@@ -102,21 +108,19 @@ const sendmail = (mailOptions) => {
     });
 }
 
+app.post('/', (req, res) => {
+    try {
+        sendmail()
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
 
 app.post('/app/SignUp/', async (req, res) => {
     try {
-        try {
-            const mailOptions = {
-                from: 'hello@example.com',
-                to: 'arulkumar72004@gmail.com',
-                subject: 'Subject',
-                text: `checked the ${req.body.Formobject.Username}`
-            };
-            sendmail(mailOptions)
-        }
-        catch (err) {
-            console.log(err)
-        }
+
+        sendmail()
 
         const data = {
             Username: req.body.Formobject.Username,
@@ -195,32 +199,10 @@ const DataPost = (username) => {
     return User
 }
 
-app.post('/', (req, res) => {
-    try {
-        const mailOptions = {
-            from: 'hello@example.com',
-            to: 'arulkumar72004@gmail.com',
-            subject: 'Subject',
-            text: `succesfull logged`
-        };
 
-        sendmail(mailOptions)
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
 app.post('/app/', async (req, res) => {
 
     try {
-        const mailOptions = {
-            from: 'hello@example.com',
-            to: 'arulkumar72004@gmail.com',
-            subject: 'Subject',
-            text: `checked the /app/`
-        };
-
-        sendmail(mailOptions)
 
         const ReceivedData = await req.body.data;
         console.log('Received data from the frontend:', ReceivedData);
