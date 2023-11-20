@@ -21,9 +21,6 @@ console.log('url', process.env.MONGODB_URI)
 const mongoURI = process.env.MONGODB_URI
 console.log('url', mongoURI)
 // Connection URI
-// const uri = 'mongodb+srv://admin04:arul9976@cluster0.fzkpyji.mongodb.net/?retryWrites=true&w=majority';
-// const uri = 'mongodb://localhost:27017/';
-// Connect to the MongoDB server
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
