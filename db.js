@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { ObjectId } = require('mongodb');
-const nodemailer = require('nodemailer')
 const router = express.Router()
 
 
@@ -76,53 +75,13 @@ app.get('/Dashboard', (req, res) => {
 
 const Login = require('./src/db_Login');
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    auth: {
-        user: 'arunmicheal8@gmail.com',
-        pass: 'muohnboaccbwfpoq',
-    }
 
 
-});
 
-const mailOptions = {
-    from: 'hello@example.com',
-    to: 'arulkumar72004@gmail.com',
-    subject: 'Subject',
-    text: `Sucessfully logging`
-};
 
-const sendmail = () => {
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log('hi err', error);
-        } else {
-            console.log('Email sent: ' + info.response);
-            // do something useful
-        }
-    });
-}
-
-app.post('/', (req, res) => {
-    try {
-        sendmail()
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
 
 app.post('/app/SignUp/', async (req, res) => {
     try {
-        try {
-            sendmail()
-        }
-        catch (err) {
-            console.log(err)
-        }
-
 
         const data = {
             Username: req.body.Formobject.Username,
@@ -265,7 +224,6 @@ app.delete('/app/:id/', async (req, res) => {
 
 
 app.get('/app/:username/', async (req, res) => {
-    sendmail()
 
     const data = req.params;
     console.log('name', data)
