@@ -109,6 +109,22 @@ app.post('/app/SignUp/', async (req, res) => {
 
 })
 
+app.get("/app/check/:username/:id", async (req, res) => {
+    const data = req.params;
+    let mail = data.username;
+    let id = data.id;
+    console.log(mail, id);
+    const Data = await DataPost(mail).findById(id);
+    console.log(Data);
+    if (Data.checked) {
+        await DataPost(mail).findByIdAndUpdate({ _id: id }, { checked: false })
+    } else {
+        await DataPost(mail).findByIdAndUpdate({ _id: id }, { checked: true })
+
+    }
+    res.send(Data)
+})
+
 app.post('/app/Login/', async (req, res) => {
 
     const DataEL = await req.body
@@ -118,11 +134,8 @@ app.post('/app/Login/', async (req, res) => {
     console.log('hi', Data)
     try {
         if (Data.length !== 0) {
-            console.log('password', req.body.Formobject.Password)
             const pass = Data[0].Password
-            console.log('email', pass)
             if (await bcrypt.compare(req.body.Formobject.Password, pass)) {
-                console.log('pass')
                 res.json(Data)
             }
             else {
@@ -134,7 +147,6 @@ app.post('/app/Login/', async (req, res) => {
             res.json({ error: 'User not exists' })
         }
 
-        // res.json(Data)
     }
 
     catch (error) {
@@ -169,7 +181,6 @@ app.post('/app/', async (req, res) => {
         console.log('Received data from the frontend:', ReceivedData);
         try {
             ReceivedData.forEach(Data => {
-                console.log('jjh', Data)
                 let User = DataPost(Data.username)
                 const newData = new User(Data)
                 console.log('frfd', newData)
@@ -241,7 +252,7 @@ app.get('/app/:username/', async (req, res) => {
 
 
 
-const PORT = process.env.PORT || 4000
+const PORT = process.env.X_ZOHO_CATALYST_LISTEN_PORT || 4000
 
 app.listen(PORT, () => {
     console.log(`server connected ${PORT}`);

@@ -10,6 +10,7 @@ const msg = document.querySelector('.list-items > ul')
 
 
 
+
 const savedItems = []
 let currentMenu = null;
 let username = ''
@@ -31,9 +32,11 @@ const SignUpLoaded = () => {
 
 }
 const TimeFunc = (date) => {
+    let monthWord = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
     let Hours = date.getHours()
     let Minutes = date.getMinutes()
-    let month = date.getMonth()
+    let month = monthWord[date.getMonth()]
     let TodayDate = date.getDate()
     let AmPm = Hours >= 12 ? 'Pm' : 'Am'
     Hours = Hours % 12
@@ -43,11 +46,10 @@ const TimeFunc = (date) => {
         return n
     }
     Minutes = Add0(Minutes)
-    month = Add0(month)
+    // month = Add0(month)
     TodayDate = Add0(TodayDate)
-    let monthWord = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    month = month < 10 ? '0' + month : month
-    let strTime = { date: TodayDate, month: monthWord[month], hours: Hours, minutes: Minutes, ampm: AmPm }
+    let strTime = { date: TodayDate, month: month, hours: Hours, minutes: Minutes, ampm: AmPm }
+    console.log(month);
     return strTime
 }
 
@@ -145,7 +147,7 @@ const displayItem = (ItemsOnList, appear = false) => {
     const MenuBtn = itemNode.querySelector('.menu_wrapper > .menuBar')
     const MenuBase = itemNode.querySelector('.menu_wrapper > .menu_base')
     const date = itemNode.querySelector('#time')
-
+    console.log(ItemsOnList);
     date.textContent = `${ItemsOnList.TimeDate.date} ${ItemsOnList.TimeDate.month} ${ItemsOnList.TimeDate.hours}:${ItemsOnList.TimeDate.minutes} ${ItemsOnList.TimeDate.ampm}`
     MenuBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -196,17 +198,6 @@ const displayItem = (ItemsOnList, appear = false) => {
 
     msg.prepend(itemNode)
 
-    // RemoveAll.addEventListener('click', () => {
-    //     const checked = msg.querySelectorAll('.list-item.checked')
-    //     checked.forEach(DataChecked => {
-    //         const index = savedItems.indexOf(ItemsOnList)
-    //         savedItems.splice(index, 1);
-    //         const id = DataChecked.querySelector('.list-item__title > span').id
-    //         deleteTask(id)
-    //         msg.removeChild(DataChecked)
-    //     })
-    // })
-
     DeleteEl.addEventListener('click', () => {
         if (itemNode.classList.contains('checked')) {
             console.dir(itemNode)
@@ -221,16 +212,20 @@ const displayItem = (ItemsOnList, appear = false) => {
             const index = savedItems.indexOf(ItemsOnList)
 
             savedItems.splice(index, 1);
-            // if (NumData % 2 == 0) {
-            //     col_1.removeChild(itemNode)
-            // }
-            // else {
-            //     col_2.removeChild(itemNode)
-            // }
             msg.removeChild(itemNode)
 
         }, duration);
     })
+
+}
+function func(obj) {
+    let ID = obj.querySelector(".list-item__title span").id
+    fetch(`/app/check/${Username.textContent}/${ID}`, {
+        method: 'GET'
+    }).then(res =>res.json().then(data => console.log(data))).catch(err => console.log(err))
+
+    console.log(Username,ID);
+
 
 }
 const DataLoad = (data) => {
@@ -356,7 +351,7 @@ LoginLink.addEventListener('click', () => {
 
 const preloader = document.getElementById('preloader')
 
-console.log(preloader)
+
 
 
 window.addEventListener('load', () => {
